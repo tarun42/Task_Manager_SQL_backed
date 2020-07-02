@@ -1,7 +1,10 @@
 
-import "package:flutter/material.dart";
-int count=0;
 
+
+import "package:flutter/material.dart";
+import 'package:task_reminder/screens/task_detail.dart';
+int count=0;
+String title="Add Task";
 class Tasklist extends StatefulWidget {
   @override
   _TasklistState createState() => _TasklistState();
@@ -18,10 +21,16 @@ class _TasklistState extends State<Tasklist> {
       ),
       body: gettasklist(),
       floatingActionButton: FloatingActionButton(
-        onPressed: (){},
+        onPressed: (){
+          debugPrint("floadting button");
+          Navigator.push(context, MaterialPageRoute(builder: (context){
+            return Taskdetail(title);
+          }
+          ));
+        },
         tooltip: 'add Note',
         child: Icon(Icons.add),
-      ),
+      )
     );
   }
 
@@ -43,10 +52,16 @@ ListView gettasklist()
             trailing: Icon(Icons.done,color: Colors.grey,),
             onTap: (){
               debugPrint("listtile");
+              Navigator.push(context, MaterialPageRoute(builder: (context)
+              {
+                  return Taskdetail(title);
+              }));
             },
           ),
        );
     },
     itemCount: count,);
 }
+
+
 }
