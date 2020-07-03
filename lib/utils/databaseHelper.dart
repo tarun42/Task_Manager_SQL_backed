@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:async';
 import 'dart:io';
@@ -31,15 +32,15 @@ class DatabaseHelper{
       }
       return _database;
     }
-  Future<Database> initializeDatabase()  async{
-    Directory directory= await getApplicationDocumentsDirectory();
-    String path =directory.path +'task.db';
-    
-    var taskDatabase=openDatabase(path,version: 1 , onCreate: _createDb);
-    return taskDatabase;
-    
+  Future<Database> initializeDatabase() async {
+		// Get the directory path for both Android and iOS to store database.
+		Directory directory = await getApplicationDocumentsDirectory();
+		String path = directory.path + 'notes.db';
 
-  }
+		// Open/create the database at a given path
+		var notesDatabase = await openDatabase(path, version: 1, onCreate: _createDb);
+		return notesDatabase;
+	}
   void _createDb(Database db,int newVersion) async{
     await db.execute('CREATE TABLE $taskTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colTitle TEXT,$colDescription TEXT , $colpriority INTEGER, $coldate TEXT)');
   }
@@ -58,6 +59,7 @@ class DatabaseHelper{
 	Future<int> insertNote(TaskTable note) async {
 		Database db = await this.database;
 		var result = await db.insert(taskTable, note.toMap());
+    debugPrint("insert query waiting");
 		return result;
 	}
 
@@ -83,7 +85,6 @@ class DatabaseHelper{
 		return result;
 	}
 
-	// Get the 'Map List' [ List<Map> ] and convert it to 'Note List' [ List<Note> ]
 	Future<List<TaskTable>> getNoteList() async {
 
 		var noteMapList = await getNoteMapList(); // Get 'Map List' from database

@@ -14,20 +14,23 @@ class Taskdetail extends StatefulWidget {
   
 State<StatefulWidget> createState() {
 
-    return _TaskdetailState(this.note, this.appBarTitle);
+    return TaskdetailState(this.note, this.appBarTitle);
   }
 }
 
-class _TaskdetailState extends State<Taskdetail> {
+class TaskdetailState extends State<Taskdetail> {
   
   String appBarTitle;
   static var _priorities =['High','low'];
-DatabaseHelper helper = DatabaseHelper();
-TaskTable note;
+
+  DatabaseHelper helper = DatabaseHelper();
+  
+  TaskTable note;
+  
   TextEditingController _first=new TextEditingController();
   TextEditingController _second=new TextEditingController();
   
-  _TaskdetailState(this.note,this.appBarTitle);
+  TaskdetailState(this.note,this.appBarTitle);
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +63,7 @@ TaskTable note;
                onChanged: (valueSelectedByUser){
                  setState(() {
                   debugPrint('user select'); 
+                  updatePriorityAsInt(valueSelectedByUser);
                  });
                }
               ),
@@ -114,8 +118,8 @@ TaskTable note;
 
                     onPressed: (){
                       setState(() {
+                       debugPrint("saved button");
                         _save();
-                        debugPrint("saved button");
                       });
                     },
                     
@@ -155,7 +159,16 @@ void movetolastscreen()
   Navigator.pop(context, true);
 }
 
-
+void updatePriorityAsInt(String value) {
+		switch (value) {
+			case 'High':
+				note.priority = 1;
+				break;
+			case 'Low':
+				note.priority = 2;
+				break;
+		}
+	}
 String getPriorityAsString(int value) {
 		String priority;
 		switch (value) {
@@ -182,14 +195,16 @@ String getPriorityAsString(int value) {
 	// Save data to database
 	void _save() async {
 
-		//moveToLastScreen();
-Navigator.pop(context, true);
+		movetolastscreen();
+    //Navigator.pop(context, true);
 		note.date = DateFormat.yMMMd().format(DateTime.now());
 		int result;
 		if (note.id != null) {  // Case 1: Update operation
 			result = await helper.updateNote(note);
+      debugPrint("not insert queery");
 		} else { // Case 2: Insert Operation
 			result = await helper.insertNote(note);
+      debugPrint("insert queery");
 		}
 
 		if (result != 0) {  // Success
@@ -197,13 +212,13 @@ Navigator.pop(context, true);
 		} else {  // Failure
 			_showAlertDialog('Status', 'Problem Saving Note');
 		}
-
+    
 	}
 
 	void _delete() async {
 
-		//moveToLastScreen();
-Navigator.pop(context, true);
+		movetolastscreen();
+    //Navigator.pop(context, true);
 		// Case 1: If user is trying to delete the NEW NOTE i.e. he has come to
 		// the detail page by pressing the FAB of NoteList page.
 		if (note.id == null) {

@@ -7,19 +7,23 @@ import 'package:task_reminder/models/tasl_table.dart';
 import "package:flutter/material.dart";
 import 'package:task_reminder/screens/task_detail.dart';
 import 'package:task_reminder/utils/databaseHelper.dart';
-int count=0;
-String title="Add Task";
+
+
 class Tasklist extends StatefulWidget {
-  
-  @override
-  _TasklistState createState() => _TasklistState();
+
+	@override
+  State<StatefulWidget> createState() {
+
+    return TasklistState();
+  }
 }
 
-class _TasklistState extends State<Tasklist> {
+class TasklistState extends State<Tasklist> {
   
   DatabaseHelper databasehelper = DatabaseHelper();
   List<TaskTable> taskList;
   int count=0;
+
   @override
   Widget build(BuildContext context) {
     if(taskList==null)
@@ -27,6 +31,8 @@ class _TasklistState extends State<Tasklist> {
       taskList=List<TaskTable>();
       updateListView();
     }
+    updateListView();
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Task !."),
