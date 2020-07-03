@@ -22,7 +22,7 @@ dependencies:
   sqflite: any
   path_provider: any
   intl: ^0.15.7
-  ed
+  
 
 dev_dependencies:
   flutter_test:

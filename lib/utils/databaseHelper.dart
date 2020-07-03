@@ -4,9 +4,9 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:task_reminder/models/tasl_table.dart';
  
-class databaseHelper{
+class DatabaseHelper{
 
-  static databaseHelper _databasehelper;
+  static DatabaseHelper _databasehelper;
   static Database _database;
 
   String taskTable ='task_table';
@@ -15,11 +15,11 @@ class databaseHelper{
   String colDescription ='description';
   String colpriority ='priority';
   String coldate='date';
-  databaseHelper._createInstance();
-  factory databaseHelper(){
+  DatabaseHelper._createInstance();
+  factory DatabaseHelper(){
     if(_databasehelper==null)
     {
-      _databasehelper= databaseHelper._createInstance();
+      _databasehelper=DatabaseHelper._createInstance();
     }
     return _databasehelper;
    
@@ -55,14 +55,14 @@ class databaseHelper{
 	}
 
 	// Insert Operation: Insert a Note object to database
-	Future<int> insertNote(tasl_table note) async {
+	Future<int> insertNote(TaskTable note) async {
 		Database db = await this.database;
 		var result = await db.insert(taskTable, note.toMap());
 		return result;
 	}
 
 	// Update Operation: Update a Note object and save it to database
-	Future<int> updateNote(tasl_table note) async {
+	Future<int> updateNote(TaskTable note) async {
 		var db = await this.database;
 		var result = await db.update(taskTable, note.toMap(), where: '$colId = ?', whereArgs: [note.id]);
 		return result;
@@ -84,15 +84,15 @@ class databaseHelper{
 	}
 
 	// Get the 'Map List' [ List<Map> ] and convert it to 'Note List' [ List<Note> ]
-	Future<List<tasl_table>> getNoteList() async {
+	Future<List<TaskTable>> getNoteList() async {
 
 		var noteMapList = await getNoteMapList(); // Get 'Map List' from database
 		int count = noteMapList.length;         // Count the number of map entries in db table
 
-		List<tasl_table> noteList = List<tasl_table>();
+		List<TaskTable> noteList = List<TaskTable>();
 		// For loop to create a 'Note List' from a 'Map List'
 		for (int i = 0; i < count; i++) {
-			noteList.add(tasl_table.fromMapToObject(noteMapList[i]));
+			noteList.add(TaskTable.fromMapToObject(noteMapList[i]));
 		}
 
 		return noteList;

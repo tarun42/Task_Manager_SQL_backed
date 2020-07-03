@@ -1,17 +1,17 @@
 
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart';
-import 'dart:async';
-import 'dart:io';
-import 'package:path_provider/path_provider.dart';
+
+
 import 'package:task_reminder/models/tasl_table.dart';
 import 'package:task_reminder/utils/databaseHelper.dart';
 import 'package:intl/intl.dart';
 
+// ignore: must_be_immutable
 class Taskdetail extends StatefulWidget {
   String appBarTitle;
-  final tasl_table note;
+  final TaskTable note;
   Taskdetail(this.note,this.appBarTitle);
+  
 State<StatefulWidget> createState() {
 
     return _TaskdetailState(this.note, this.appBarTitle);
@@ -22,8 +22,8 @@ class _TaskdetailState extends State<Taskdetail> {
   
   String appBarTitle;
   static var _priorities =['High','low'];
-databaseHelper helper = databaseHelper();
-tasl_table note;
+DatabaseHelper helper = DatabaseHelper();
+TaskTable note;
   TextEditingController _first=new TextEditingController();
   TextEditingController _second=new TextEditingController();
   
@@ -42,7 +42,7 @@ tasl_table note;
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: (){
-              Navigator.pop(context);
+              Navigator.pop(context,true);
             },
           ),
         ),
@@ -142,8 +142,9 @@ tasl_table note;
             ),
           ],
         ),
+      // ignore: missing_return
       ), onWillPop: () {
-        Navigator.pop(context);
+        Navigator.pop(context,true);
               },
     );
 

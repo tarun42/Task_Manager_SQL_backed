@@ -1,8 +1,7 @@
 
 import 'package:sqflite/sqflite.dart';
 import 'dart:async';
-import 'dart:io';
-import 'package:path_provider/path_provider.dart';
+
 import 'package:task_reminder/models/tasl_table.dart';
 
 import "package:flutter/material.dart";
@@ -18,14 +17,14 @@ class Tasklist extends StatefulWidget {
 
 class _TasklistState extends State<Tasklist> {
   
-  databaseHelper databasehelper = databaseHelper();
-  List<tasl_table> taskList;
+  DatabaseHelper databasehelper = DatabaseHelper();
+  List<TaskTable> taskList;
   int count=0;
   @override
   Widget build(BuildContext context) {
     if(taskList==null)
     {
-      taskList=List<tasl_table>();
+      taskList=List<TaskTable>();
       updateListView();
     }
     return Scaffold(
@@ -38,7 +37,7 @@ class _TasklistState extends State<Tasklist> {
         onPressed: (){
           debugPrint("floadting button");
           Navigator.push(context, MaterialPageRoute(builder: (context){
-            return Taskdetail(tasl_table('', '', 2), 'Add Note');
+            return Taskdetail(TaskTable('', '', 2), 'Add Note');
           }
           ));
         },
@@ -111,7 +110,7 @@ ListView gettasklist()
 		}
 	}
 
-	void _delete(BuildContext context,tasl_table note) async {
+	void _delete(BuildContext context,TaskTable note) async {
 
 		int result = await databasehelper.deleteNote(note.id);
 		if (result != 0) {
@@ -126,7 +125,7 @@ ListView gettasklist()
 		Scaffold.of(context).showSnackBar(snackBar);
 	}
 
-  void navigateToDetail(tasl_table note, String title) async {
+  void navigateToDetail(TaskTable note, String title) async {
 	  bool result = await Navigator.push(context, MaterialPageRoute(builder: (context) {
 		  return Taskdetail(note, title);
 	  }));
@@ -141,7 +140,7 @@ ListView gettasklist()
 		final Future<Database> dbFuture = databasehelper.initializeDatabase();
 		dbFuture.then((database) {
 
-			Future<List<tasl_table>> noteListFuture = databasehelper.getNoteList();
+			Future<List<TaskTable>> noteListFuture = databasehelper.getNoteList();
 			noteListFuture.then((noteList) {
 				setState(() {
 				  this.taskList = noteList;
