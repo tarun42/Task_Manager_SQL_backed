@@ -20,8 +20,7 @@ jobs:
 
     - run: flutter format --set-exit-if-changed .
 
-    - run: flutter analyze .
 
 
-    
+
 
