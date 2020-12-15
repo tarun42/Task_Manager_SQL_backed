@@ -30,7 +30,7 @@ class TaskdetailState extends State<Taskdetail> {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle textStyle = Theme.of(context).textTheme.title;
+    TextStyle textStyle = Theme.of(context).textTheme.headline6;
 
     _first.text = note.title;
     _second.text = note.description;
